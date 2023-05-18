@@ -2,8 +2,9 @@ const express = require('express');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 const port = process.env.PORT || 3000;
-const uri = "mongodb+srv://nayemmh66:TX7DLHFd5uIGZ8bs@cluster0.6bvml06.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.6bvml06.mongodb.net/?retryWrites=true&w=majority`;
 
 // middleware
 app.use(express.json());
@@ -13,8 +14,6 @@ app.get('/', (req, res) => {
     res.send('Kids Are Playing');
 });
 
-//nayemmh66
-//TX7DLHFd5uIGZ8bs
 
 
 
