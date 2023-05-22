@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
@@ -50,6 +50,16 @@ async function run() {
       res.send(result);
     })
 
+    //Get toys added by specific user
+    app.get('/my-toy/:id', async(req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const query = { seller_id: id };
+      const result = await toyCollection.find(query).toArray();
+      // console.log(result);
+      res.send(result);
+    });
+    
 
 
 
