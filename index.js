@@ -59,7 +59,15 @@ async function run() {
       // console.log(result);
       res.send(result);
     });
-    
+    //delete users toy
+    app.delete('/my-toy/:id', async(req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.deleteOne(query);
+      // console.log(result);
+      res.send(result);
+    });
 
 
 
