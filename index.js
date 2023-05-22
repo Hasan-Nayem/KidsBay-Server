@@ -81,7 +81,22 @@ async function run() {
     app.put('/toy/:id', async (req, res) => {
       const id = req.params.id;
       const data = req.body;
-      console.log(data);
+      // console.log(data.toy_title);
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const update = { 
+        $set : { 
+          toy_title: data.toy_title, 
+          description: data.description, 
+          price: data.price, 
+          img: data.img, 
+          rating: data.rating, 
+          quantity: data.quantity,
+          category: data.category
+        }
+      };
+      const result = await toyCollection.updateOne(filter, update, options);
+      res.send(result);
     });
 
   } finally {
