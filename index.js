@@ -5,7 +5,6 @@ const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000;
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.6bvml06.mongodb.net/?retryWrites=true&w=majority`;
-
 // middleware
 app.use(express.json());
 app.use(cors());
@@ -13,11 +12,6 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('Kids Are Playing');
 });
-
-
-
-
-
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -35,9 +29,28 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+    const categoryCollection = client.db("kidsbay").collection("category");
+    const toyCollection = client.db("kidsbay").collection("toys")
+
+    app.get('/category', async (req, res) => {
+      const data = await categoryCollection.find().toArray();
+      res.send(data);
+    });
+
+    app.post('/addToy', async (req, res) => {
+      const data = req.body;
+      console.log(data);
+      const result = await toyCollection.insertOne(data);
+      res.send(result);
+    })
+
+
+
+
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
