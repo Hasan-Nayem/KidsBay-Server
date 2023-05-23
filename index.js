@@ -38,8 +38,16 @@ async function run() {
       res.send(data);
     });
 
+    //get all toys from all user
     app.get('/allToys', async (req, res) => {
       const result = await toyCollection.find().toArray();
+      res.send(result);
+    })
+
+    //sort data by price
+    app.get('/allToysSortBy/:sort', async (req, res) => {
+      const sortBy = req.params.sort;
+      const result = await toyCollection.find().sort({price:sortBy}).toArray();
       res.send(result);
     })
 
@@ -69,7 +77,7 @@ async function run() {
       res.send(result);
     });
 
-    //get a single data
+    //get a single data of a user
     app.get('/toy/:id', async(req, res) => {
       const id = req.params.id;
       const query = {_id:  new ObjectId(id)};
@@ -77,7 +85,8 @@ async function run() {
       res.send(result);
     });
 
-    //update toy
+
+    //update toy data of a user
     app.put('/toy/:id', async (req, res) => {
       const id = req.params.id;
       const data = req.body;
@@ -98,6 +107,7 @@ async function run() {
       const result = await toyCollection.updateOne(filter, update, options);
       res.send(result);
     });
+
 
   } finally {
     // Ensures that the client will close when you finish/error
